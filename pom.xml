@@ -13,6 +13,8 @@
         <module>02-serial-job</module>
         <module>03-set-pipeline</module>
         <module>04-create-and-consume</module>
+        <module>05-time-triggered</module>
+        <module>06-git-triggered</module>
     </modules>
 
     <properties>
