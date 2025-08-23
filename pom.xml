@@ -12,6 +12,7 @@
         <module>01-hello-world</module>
         <module>02-serial-job</module>
         <module>03-set-pipeline</module>
+        <module>04-create-and-consume</module>
     </modules>
 
     <properties>

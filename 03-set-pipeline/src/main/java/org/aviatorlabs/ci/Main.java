@@ -1,4 +1,4 @@
-package org.aviatorlabs.ci.examples;
+package org.aviatorlabs.ci;
 
 import org.aviatorlabs.ci.resource.git.GitResource;
 import org.aviatorlabs.ci.resource.git.GitResourceConfig;

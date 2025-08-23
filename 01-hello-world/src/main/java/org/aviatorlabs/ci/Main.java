@@ -1,4 +1,4 @@
-package org.aviatorlabs.ci.examples;
+package org.aviatorlabs.ci;
 
 import org.aviatorlabs.ci.resource.registry.RegistryImageConfig;
 import org.aviatorlabs.ci.resource.registry.RegistryImageResourceType;
@@ -21,8 +21,7 @@ public class Main {
                 RegistryImageConfig.create("busybox")
         );
 
-        Command command = Command.createCommand("echo");
-        command.addArg("Hello world!");
+        Command command = Command.createCommand("echo").addArg("Hello world!");
 
         TaskConfig config = TaskConfig.create(Platform.LINUX, busyBox, command);
         Task simpleTask = Task.create("simple-task", config);
