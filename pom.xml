@@ -15,6 +15,10 @@
         <module>04-create-and-consume</module>
         <module>05-time-triggered</module>
         <module>06-git-triggered</module>
+        <module>07-manually-triggered</module>
+        <module>08-hooks</module>
+        <module>09-golang-lib</module>
+        <module>10-rails-application</module>
     </modules>
 
     <properties>
@@ -22,6 +26,11 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.11.4</junit.version>
+
+        <aviatorlabs.pipelinesdk.version>0.0.1</aviatorlabs.pipelinesdk.version>
+        <aviatorlabs.registry.version>0.0.1</aviatorlabs.registry.version>
+        <aviatorlabs.git.version>0.0.1</aviatorlabs.git.version>
+        <aviatorlabs.time.version>0.0.1</aviatorlabs.time.version>
     </properties>
 
     <dependencies>

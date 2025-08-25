@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.aviatorlabs.ci</groupId>
             <artifactId>git-resource</artifactId>
-            <version>0.0.1</version>
+            <version>${aviatorlabs.git.version}</version>
         </dependency>
     </dependencies>
 
