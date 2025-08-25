@@ -19,6 +19,12 @@
         <module>08-hooks</module>
         <module>09-golang-lib</module>
         <module>10-rails-application</module>
+        <module>11-java-application</module>
+        <module>12-nodejs-application</module>
+        <module>13-php-application</module>
+        <module>14-build-and-use-image</module>
+        <module>15-build-and-push-image</module>
+        <module>16-separate-task-config</module>
     </modules>
 
     <properties>
@@ -44,27 +50,6 @@
             <groupId>org.aviatorlabs.ci</groupId>
             <artifactId>registry-resource</artifactId>
             <version>0.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
