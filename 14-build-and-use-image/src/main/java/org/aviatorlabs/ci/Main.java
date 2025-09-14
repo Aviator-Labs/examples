@@ -43,6 +43,6 @@ public class Main {
 
         pipeline.addJob(job);
 
-        System.out.println(pipeline);
+        System.out.println(pipeline.render());
     }
 }
