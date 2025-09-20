@@ -25,6 +25,7 @@
         <module>14-build-and-use-image</module>
         <module>15-build-and-push-image</module>
         <module>16-separate-task-config</module>
+        <module>17-github-release</module>
     </modules>
 
     <properties>
@@ -36,6 +37,7 @@
         <aviatorlabs.pipelinesdk.version>0.0.3</aviatorlabs.pipelinesdk.version>
         <aviatorlabs.registry.version>0.0.3</aviatorlabs.registry.version>
         <aviatorlabs.git.version>0.0.2</aviatorlabs.git.version>
+        <aviatorlabs.githubrelease.version>0.0.1</aviatorlabs.githubrelease.version>
         <aviatorlabs.time.version>0.0.2</aviatorlabs.time.version>
     </properties>
 

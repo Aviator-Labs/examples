@@ -1,0 +1,3514 @@
+{
+  "groups": [
+    {
+      "name": "all",
+      "jobs": [
+        "spruce-homebrew",
+        "spruce-debian",
+        "shield-homebrew",
+        "shield-debian",
+        "safe-homebrew",
+        "safe-debian",
+        "eden-homebrew",
+        "eden-debian",
+        "kafka-service-broker-homebrew",
+        "kafka-service-broker-debian",
+        "install-debs-in-order-debian",
+        "gotcha-homebrew",
+        "gotcha-debian",
+        "genesis-homebrew",
+        "genesis-debian",
+        "bosh-cli-debian",
+        "credhub-cli-debian",
+        "uaa-cli-homebrew",
+        "uaa-cli-debian",
+        "certstrap-debian",
+        "cf-cli-debian",
+        "cf6-cli-debian",
+        "cf7-cli-debian",
+        "jq-debian",
+        "om-homebrew",
+        "om-debian",
+        "pivnet-cli-debian",
+        "hub-debian",
+        "direnv-debian",
+        "terraform-debian",
+        "bosh-bootloader-debian",
+        "govc-homebrew",
+        "govc-debian",
+        "quaa-homebrew",
+        "pack-debian",
+        "riff-homebrew",
+        "riff-debian",
+        "knctl-debian",
+        "aliyun-debian",
+        "minica-debian",
+        "yj-homebrew",
+        "yj-debian",
+        "fissile-homebrew",
+        "vault-debian"
+      ]
+    },
+    {
+      "name": "homebrew",
+      "jobs": [
+        "spruce-homebrew",
+        "shield-homebrew",
+        "safe-homebrew",
+        "eden-homebrew",
+        "kafka-service-broker-homebrew",
+        "gotcha-homebrew",
+        "genesis-homebrew",
+        "uaa-cli-homebrew",
+        "govc-homebrew",
+        "quaa-homebrew",
+        "riff-homebrew",
+        "om-homebrew",
+        "yj-homebrew",
+        "fissile-homebrew"
+      ]
+    },
+    {
+      "name": "debian",
+      "jobs": [
+        "spruce-debian",
+        "shield-debian",
+        "safe-debian",
+        "eden-debian",
+        "kafka-service-broker-debian",
+        "install-debs-in-order-debian",
+        "gotcha-debian",
+        "genesis-debian",
+        "bosh-cli-debian",
+        "credhub-cli-debian",
+        "uaa-cli-debian",
+        "certstrap-debian",
+        "cf-cli-debian",
+        "cf6-cli-debian",
+        "cf7-cli-debian",
+        "jq-debian",
+        "om-debian",
+        "pivnet-cli-debian",
+        "hub-debian",
+        "direnv-debian",
+        "terraform-debian",
+        "bosh-bootloader-debian",
+        "govc-debian",
+        "pack-debian",
+        "riff-debian",
+        "knctl-debian",
+        "aliyun-debian",
+        "minica-debian",
+        "yj-debian",
+        "vault-debian"
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "name": "install-debs-in-order-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "install-debs-in-order",
+          "resource": "install-debs-in-order",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "install-debs-in-order",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "install-debs-in-order-linux-amd64",
+              "OUT_BINARY": "install-debs-in-order",
+              "NAME": "install-debs-in-order",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "Install a directory of *.deb in the correct order",
+              "URL": "https://github.com/starkandwayne/install-debs-in-order",
+              "MAINTAINERS": "https://github.com/starkandwayne/install-debs-in-order/graphs/contributors",
+              "VENDOR": "Stark & Wayne LLC",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "kafka-service-broker-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "kafka-service-broker",
+          "resource": "kafka-service-broker",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "kafka-service-broker",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "kafka-service-broker-linux-amd64",
+              "OUT_BINARY": "kafka-service-broker",
+              "NAME": "kafka-service-broker",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "Open Service Broker for Apache Kafka",
+              "URL": "https://github.com/starkandwayne/kafka-service-broker",
+              "MAINTAINERS": "https://github.com/starkandwayne/kafka-service-broker/graphs/contributors",
+              "VENDOR": "Stark & Wayne LLC",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "kafka-service-broker-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "kafka-service-broker",
+          "resource": "kafka-service-broker",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "kafka-service-broker",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "kafka-service-broker.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "kafka-service-broker-darwin-amd64"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "eden-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "homebrew-public-key",
+          "trigger": true
+        },
+        {
+          "get": "eden",
+          "resource": "eden",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "eden",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "eden-linux-amd64",
+              "OUT_BINARY": "eden",
+              "NAME": "eden",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "CLI to any Open Service Broker API",
+              "URL": "https://github.com/starkandwayne/eden",
+              "MAINTAINERS": "https://github.com/starkandwayne/eden/graphs/contributors",
+              "VENDOR": "Stark & Wayne LLC",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "eden-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "eden",
+          "resource": "eden",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "eden",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "eden.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "eden-darwin-amd64"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "safe-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "safe",
+          "resource": "safe",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "safe",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "safe-*-linux-amd64",
+              "OUT_BINARY": "safe",
+              "NAME": "safe",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "Alternative Vault CLI",
+              "URL": "https://github.com/cloudfoundry-community/safe",
+              "MAINTAINERS": "https://github.com/cloudfoundry-community/safe/graphs/contributors",
+              "VENDOR": "Cloud Foundry Community",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "safe-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "safe",
+          "resource": "safe",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "safe",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "safe.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "safe-*-darwin-amd64"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "vault-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "vault",
+          "resource": "vault",
+          "trigger": true,
+          "params": {
+            "regexp": "linux_amd64"
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "vault",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY_PREFIX_ZIP": "vault_",
+              "IN_BINARY": "vault",
+              "OUT_BINARY": "vault",
+              "NAME": "vault",
+              "LICENSE": "Mozilla Public License 2.0",
+              "DESCRIPTION": "A tool for secrets management, encryption as a service, and privileged access management",
+              "URL": "https://www.vaultproject.io/",
+              "MAINTAINERS": "https://github.com/cloudfoundry-community/safe/graphs/contributors",
+              "VENDOR": "Hashicorp",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "gotcha-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "gotcha",
+          "resource": "gotcha",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "gotcha",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "gotcha-linux-amd64",
+              "OUT_BINARY": "gotcha",
+              "NAME": "gotcha",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "Debugging MiTM HTTP Proxy",
+              "URL": "https://github.com/starkandwayne/gotcha",
+              "MAINTAINERS": "https://github.com/starkandwayne/gotcha/graphs/contributors",
+              "VENDOR": "Stark & Wayne LLC",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "gotcha-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "gotcha",
+          "resource": "gotcha",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "gotcha",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "gotcha.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "gotcha-darwin-amd64"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "genesis-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "genesis",
+          "resource": "genesis",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "genesis",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "genesis",
+              "OUT_BINARY": "genesis",
+              "NAME": "genesis",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "BOSH Deployment Paradigm",
+              "URL": "https://github.com/genesis-community/genesis",
+              "MAINTAINERS": "https://github.com/genesis-community/genesis/graphs/contributors",
+              "VENDOR": "Five Twenty LLC",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))",
+              "FPM_FLAGS": "--deb-recommends bosh-cli --deb-recommends safe --deb-recommends spruce --deb-recommends vault --deb-recommends git --deb-recommends perl"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "genesis-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "genesis",
+          "resource": "genesis",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "genesis",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "genesis.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "genesis"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "spruce-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "spruce",
+          "resource": "spruce",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "spruce",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "spruce-linux-amd64",
+              "OUT_BINARY": "spruce",
+              "NAME": "spruce",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "General purpose YAML & JSON merging tool",
+              "URL": "https://github.com/geofffranks/spruce",
+              "MAINTAINERS": "https://github.com/geofffranks/spruce/graphs/contributors",
+              "VENDOR": "Geoff Franks",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "spruce-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "spruce",
+          "resource": "spruce",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "spruce",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "spruce.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "spruce-darwin-amd64"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "shield-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "shield",
+          "resource": "shield",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "shield",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "shield-linux-amd64",
+              "OUT_BINARY": "shield",
+              "NAME": "shield",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "CLI to SHIELD Backup/Restore Director",
+              "URL": "https://github.com/shieldproject/shield",
+              "MAINTAINERS": "https://github.com/shieldproject/shield/graphs/contributors",
+              "VENDOR": "Cloud Foundry Community",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "shield-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "shield",
+          "resource": "shield",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "shield",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "shield.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "shield-darwin-amd64"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "bosh-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "bosh-cli",
+          "resource": "bosh-cli-linux",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "bosh-cli",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "bosh-cli-*-linux-amd64",
+              "OUT_BINARY": "bosh bosh",
+              "NAME": "bosh-cli",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "Interact with BOSH director",
+              "URL": "https://bosh.io/docs/cli-v2.html",
+              "MAINTAINERS": "https://github.com/cloudfoundry/bosh-cli/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "credhub-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "credhub",
+          "resource": "credhub-cli",
+          "trigger": true
+        },
+        {
+          "task": "unpack-tgz",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "credhub",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "unpacked"
+              }
+            ],
+            "run": {
+              "path": "sh",
+              "args": [
+                "-exc",
+                "tar xfz recipe/${IN_TGZ} -C unpacked\ncp recipe/version unpacked/version\n"
+              ]
+            },
+            "params": {
+              "IN_TGZ": "*linux*tgz"
+            }
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "unpacked",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "credhub",
+              "OUT_BINARY": "credhub",
+              "NAME": "credhub-cli",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "CLI to interact with CredHub servers",
+              "URL": "https://github.com/cloudfoundry-incubator/credhub-cli",
+              "MAINTAINERS": "https://github.com/cloudfoundry-incubator/credhub-cli/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "uaa-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "uaa-cli",
+          "resource": "uaa-cli",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "uaa-cli",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "uaa-linux-amd64-$VERSION",
+              "OUT_BINARY": "uaa",
+              "NAME": "uaa-cli",
+              "LICENSE": "Apache-2.0",
+              "DESCRIPTION": "CLI to UAA",
+              "URL": "https://github.com/cloudfoundry-incubator/uaa-cli",
+              "MAINTAINERS": "https://github.com/cloudfoundry-incubator/uaa-cli/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "uaa-cli-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "uaa-cli",
+          "resource": "uaa-cli",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "uaa-cli",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "uaa-cli.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "uaa-darwin-amd64-$VERSION"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "knctl-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "knctl",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "knctl-linux-amd64"
+            ]
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "knctl",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "knctl-linux-amd64",
+              "OUT_BINARY": "knctl",
+              "NAME": "knctl",
+              "LICENSE": "Apache-2.0",
+              "DESCRIPTION": "Knative CLI",
+              "URL": "https://github.com/cppforlife/knctl",
+              "MAINTAINERS": "https://github.com/cppforlife/knctl/graphs/contributors",
+              "VENDOR": "Pivotal",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "riff-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "riff",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "riff-linux-amd64.tgz"
+            ]
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "riff",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY_PREFIX_TGZ": "riff-linux-amd64",
+              "IN_BINARY_AFTER_UNPACK": "riff",
+              "OUT_BINARY": "riff",
+              "NAME": "riff",
+              "LICENSE": "Apache-2.0",
+              "DESCRIPTION": "riff is for functions",
+              "URL": "https://github.com/projectriff/riff",
+              "MAINTAINERS": "https://github.com/projectriff/riff/graphs/contributors",
+              "VENDOR": "Pivotal",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "riff-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "riff",
+          "resource": "riff",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "riff-darwin-amd64.tgz"
+            ]
+          }
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "riff",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "riff.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "riff-darwin-amd64.tgz"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "certstrap-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "certstrap",
+          "resource": "certstrap",
+          "trigger": true,
+          "params": {
+            "include_source_tarball": true
+          }
+        },
+        {
+          "task": "compile-certstrap",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse-go",
+                "tag": "1.18"
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "certstrap",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "build"
+              }
+            ],
+            "run": {
+              "path": "sh",
+              "args": [
+                "-exc",
+                "mkdir -p unpack\ntar xfs recipe/*.tar.gz -C unpack\nexport GOPATH=$PWD/build\nexport PATH=$PATH:$GOPATH/bin\nmkdir -p $GOPATH/src/github.com/square/certstrap\ncp -r unpack/*-certstrap-*/* $GOPATH/src/github.com/square/certstrap\ngo install github.com/square/certstrap@latest\n\ncp $GOPATH/bin/certstrap build/certstrap\ncp recipe/version build/version\n"
+              ]
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "buildme"
+            }
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "build",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "certstrap",
+              "OUT_BINARY": "certstrap",
+              "NAME": "certstrap",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "Tools to bootstrap CAs, certificate requests, and signed certificates",
+              "URL": "https://github.com/square/certstrap",
+              "MAINTAINERS": "https://github.com/square/certstrap/graphs/contributors",
+              "VENDOR": "Square",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cf-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "cf",
+          "resource": "cf7-cli-linux",
+          "trigger": true
+        },
+        {
+          "task": "unpack-tgz",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "cf",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "unpacked"
+              }
+            ],
+            "run": {
+              "path": "sh",
+              "args": [
+                "-exc",
+                "tar xfz recipe/${IN_TGZ} -C unpacked\ncp recipe/version unpacked/version\n"
+              ]
+            },
+            "params": {
+              "IN_TGZ": "*linux*tgz"
+            }
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "unpacked",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "cf7",
+              "OUT_BINARY": "cf",
+              "NAME": "cf-cli",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "official command line client for Cloud Foundry v7",
+              "URL": "https://docs.cloudfoundry.org",
+              "MAINTAINERS": "https://github.com/cloudfoundry/cli/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cf6-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "cf",
+          "resource": "cf6-cli-linux",
+          "trigger": true
+        },
+        {
+          "task": "unpack-tgz",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "cf",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "unpacked"
+              }
+            ],
+            "run": {
+              "path": "sh",
+              "args": [
+                "-exc",
+                "tar xfz recipe/${IN_TGZ} -C unpacked\ncp recipe/version unpacked/version\n"
+              ]
+            },
+            "params": {
+              "IN_TGZ": "*linux*tgz"
+            }
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "unpacked",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "cf",
+              "OUT_BINARY": "cf6",
+              "NAME": "cf6-cli",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "official command line client for Cloud Foundry",
+              "URL": "https://docs.cloudfoundry.org",
+              "MAINTAINERS": "https://github.com/cloudfoundry/cli/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cf7-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "cf",
+          "resource": "cf7-cli-linux",
+          "trigger": true
+        },
+        {
+          "task": "unpack-tgz",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "cf",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "unpacked"
+              }
+            ],
+            "run": {
+              "path": "sh",
+              "args": [
+                "-exc",
+                "tar xfz recipe/${IN_TGZ} -C unpacked\ncp recipe/version unpacked/version\n"
+              ]
+            },
+            "params": {
+              "IN_TGZ": "*linux*tgz"
+            }
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "unpacked",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "cf7",
+              "OUT_BINARY": "cf7",
+              "NAME": "cf7-cli",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "beta v7 command line client for Cloud Foundry",
+              "URL": "https://docs.cloudfoundry.org",
+              "MAINTAINERS": "https://github.com/cloudfoundry/cli/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "jq-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "jq",
+          "resource": "jq",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "jq",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "jq-linux64",
+              "OUT_BINARY": "jq",
+              "NAME": "jq",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "lightweight and flexible command-line JSON processor",
+              "URL": "https://stedolan.github.io/jq/",
+              "MAINTAINERS": "https://github.com/stedolan/jq/graphs/contributors",
+              "VENDOR": "Stephen Dolan",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "om-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "om",
+          "resource": "om",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "om",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "om.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "om-darwin-$VERSION"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "om-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "om",
+          "resource": "om",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "om",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "om-linux-amd64-$VERSION",
+              "OUT_BINARY": "om",
+              "NAME": "om",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "Magical tool that helps you configure and deploy tiles to an Ops-Manager 1.8+",
+              "URL": "https://github.com/pivotal-cf/om",
+              "MAINTAINERS": "Pivotal RelEng",
+              "VENDOR": "Pivotal",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "pivnet-cli-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "pivnet-cli",
+          "resource": "pivnet-cli",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "pivnet-cli",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "pivnet-linux-amd64*",
+              "OUT_BINARY": "pivnet",
+              "NAME": "pivnet-cli",
+              "LICENSE": "Apache2",
+              "DESCRIPTION": "CLI to interact with Pivotal Network",
+              "URL": "https://github.com/pivotal-cf/om",
+              "MAINTAINERS": "Pivotal RelEng",
+              "VENDOR": "Pivotal",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "hub-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "hub",
+          "resource": "hub",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "hub-linux-amd64*.tgz"
+            ]
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "hub",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY_PREFIX_TGZ": "hub-linux-amd64",
+              "IN_BINARY_AFTER_UNPACK": "hub",
+              "OUT_BINARY": "hub",
+              "NAME": "hub",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "CLI to interact with GitHub",
+              "URL": "https://github.com/github/hub",
+              "MAINTAINERS": "https://github.com/github/hub/graphs/contributors",
+              "VENDOR": "GitHub",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "direnv-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "direnv",
+          "resource": "direnv",
+          "params": {
+            "globs": [
+              "direnv.linux-amd64"
+            ]
+          },
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "direnv",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "direnv.linux-amd64",
+              "OUT_BINARY": "direnv",
+              "NAME": "direnv",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "Unclutter your .profile",
+              "URL": "https://github.com/direnv/direnv",
+              "MAINTAINERS": "https://github.com/direnv/direnv",
+              "VENDOR": "https://github.com/direnv",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "terraform-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "terraform",
+          "resource": "terraform",
+          "params": {
+            "regexp": "linux_amd64"
+          },
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "terraform",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY_PREFIX_ZIP": "terraform_",
+              "IN_BINARY": "terraform_*_linux_amd64.zip",
+              "OUT_BINARY": "terraform",
+              "NAME": "terraform",
+              "LICENSE": "Mozilla Public License 2.0",
+              "DESCRIPTION": "Terraform is a tool for building, changing, and combining infrastructure safely and efficiently",
+              "URL": "https://github.com/hashicorp/terraform",
+              "MAINTAINERS": "https://github.com/hashicorp/terraform/graphs/contributors",
+              "VENDOR": "Hashicorp",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "bosh-bootloader-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "bosh-bootloader",
+          "resource": "bosh-bootloader",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "bosh-bootloader",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "bbl-*_linux_amd64",
+              "OUT_BINARY": "bbl",
+              "NAME": "bosh-bootloader",
+              "LICENSE": "apache2",
+              "DESCRIPTION": "Command line utility for standing up a BOSH director on an IAAS of your choice.",
+              "URL": "https://github.com/cloudfoundry/bosh-bootloader",
+              "MAINTAINERS": "https://github.com/cloudfoundry/bosh-bootloader/graphs/contributors",
+              "VENDOR": "Cloud Foundry Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "govc-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "homebrew-public-key",
+          "trigger": true
+        },
+        {
+          "get": "govc",
+          "resource": "govc",
+          "params": {
+            "globs": [
+              "govc_Linux_x86_64.tar.gz"
+            ]
+          },
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "govc",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY_PREFIX_TGZ": "govc_Linux_x86_64",
+              "IN_BINARY_AFTER_UNPACK": "govc",
+              "OUT_BINARY": "govc",
+              "NAME": "govc",
+              "LICENSE": "Apache-2.0",
+              "DESCRIPTION": "CLI to vSphere",
+              "URL": "https://github.com/vmware/govmomi",
+              "MAINTAINERS": "https://github.com/vmware/govmomi/graphs/contributors",
+              "VENDOR": "VMWare",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "govc-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "govc",
+          "resource": "govc",
+          "params": {
+            "globs": [
+              "govc_darwin_amd64.gz"
+            ]
+          },
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "govc",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "govc.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "govc_darwin_amd64.gz"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "fissile-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "fissile",
+          "resource": "fissile-darwin",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "fissile",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "fissile.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "fissile-$VERSION.darwin-amd64.tgz"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "quaa-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "quaa",
+          "resource": "quick-uaa-local",
+          "params": {
+            "globs": [
+              "x"
+            ],
+            "include_source_tarball": true
+          },
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "quaa",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "quaa.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "FETCH_TGZ_BASE": "https://github.com/starkandwayne/quick-uaa-local/archive/"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "pack-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "pack",
+          "resource": "pack",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "pack",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "pack-*-linux.tgz",
+              "OUT_BINARY": "pack",
+              "NAME": "pack",
+              "LICENSE": "Apache 2.0",
+              "DESCRIPTION": "tool to create runnable images from applications using buildpacks",
+              "URL": "https://buildpacks.io",
+              "MAINTAINERS": "https://github.com/buildpack/pack/graphs/contributors",
+              "VENDOR": "Cloud Native Computing Foundation",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "aliyun-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "aliyun-cli",
+          "resource": "aliyun-cli",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "aliyun-cli-linux*tgz"
+            ]
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "aliyun-cli",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY_PREFIX_TGZ": "aliyun-cli-linux",
+              "IN_BINARY_AFTER_UNPACK": "aliyun",
+              "OUT_BINARY": "aliyun",
+              "NAME": "aliyun-cli",
+              "LICENSE": "Apache 2.0",
+              "DESCRIPTION": "Alibaba Cloud CLI",
+              "URL": "https://github.com/aliyun/aliyun-cli",
+              "MAINTAINERS": "https://github.com/aliyun/aliyun-cli/graphs/contributors",
+              "VENDOR": "Alibaba Cloud",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "minica-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "minica",
+          "resource": "minica",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "minica",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "minica-linux-amd64",
+              "OUT_BINARY": "minica",
+              "NAME": "minica",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "MiniCA",
+              "URL": "https://github.com/jsha/minica",
+              "MAINTAINERS": "hthttps://github.com/jsha/minica/graphs/contributors",
+              "VENDOR": "Jacob Hoffman-Andrews",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "yj-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "yj",
+          "resource": "yj",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "yj-macos"
+            ]
+          }
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "yj",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "yj.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "yj-macos"
+            }
+          }
+        },
+        {
+          "put": "homebrew",
+          "params": {
+            "repository": "pushme/homebrew",
+            "rebase": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "yj-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "yj",
+          "resource": "yj",
+          "trigger": true,
+          "params": {
+            "globs": [
+              "yj-linux-amd64"
+            ]
+          }
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "yj",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": 1,
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "yj-linux-amd64",
+              "OUT_BINARY": "yj",
+              "NAME": "yj",
+              "LICENSE": "apache2",
+              "DESCRIPTION": "CLI - Convert YAML <=> TOML <=> JSON <=> HCL",
+              "URL": "https://github.com/sclevine/yj",
+              "MAINTAINERS": "https://github.com/sclevine/yj/graphs/contributors",
+              "VENDOR": "Stephen Levine",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "name": "homebrew",
+      "type": "git",
+      "check_every": "6h",
+      "source": {
+        "uri": "git@github.com:aviatorlabs/examples",
+        "branch": "main",
+        "private_key": "((github_key.private_key))"
+      }
+    },
+    {
+      "name": "homebrew-public-key",
+      "type": "git",
+      "check_every": "6h",
+      "source": {
+        "uri": "git@github.com:aviatorlabs/examples",
+        "branch": "main",
+        "private_key": "((github_key.private_key))",
+        "paths": [
+          "public.key"
+        ]
+      }
+    },
+    {
+      "name": "spruce",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "geofffranks",
+        "repository": "spruce",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "shield",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "shieldproject",
+        "repository": "shield",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "safe",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "cloudfoundry-community",
+        "repository": "safe",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "vault",
+      "type": "hashicorp-release",
+      "check_every": "6h",
+      "source": {
+        "project": "vault"
+      }
+    },
+    {
+      "name": "eden",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "starkandwayne",
+        "repository": "eden",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "gotcha",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "starkandwayne",
+        "repository": "gotcha",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "genesis",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "genesis-community",
+        "repository": "genesis",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "kafka-service-broker",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "starkandwayne",
+        "repository": "kafka-service-broker",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "install-debs-in-order",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "starkandwayne",
+        "repository": "install-debs-in-order",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "bosh-cli-linux",
+      "type": "s3",
+      "check_every": "6h",
+      "source": {
+        "bucket": "bosh-cli-artifacts",
+        "regexp": "bosh-cli-(.*)-linux-amd64"
+      }
+    },
+    {
+      "name": "credhub-cli",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "cloudfoundry-incubator",
+        "repository": "credhub-cli",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "uaa-cli",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "cloudfoundry-incubator",
+        "repository": "uaa-cli",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "certstrap",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "square",
+        "repository": "certstrap",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "riff",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "owner": "projectriff",
+        "repository": "riff",
+        "pre_release": true,
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "cf6-cli-linux",
+      "type": "s3",
+      "check_every": "6h",
+      "source": {
+        "bucket": "cf-cli-releases",
+        "region_name": "us-west-1",
+        "regexp": "releases/v6.*/cf-cli_(.*)_linux_x86-64.tgz"
+      }
+    },
+    {
+      "name": "cf7-cli-linux",
+      "type": "s3",
+      "check_every": "6h",
+      "source": {
+        "bucket": "v7-cf-cli-releases",
+        "region_name": "us-west-1",
+        "regexp": "releases/v(.*)/cf7-cli_(.*)_linux_x86-64.tgz"
+      }
+    },
+    {
+      "name": "jq",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "stedolan",
+        "repository": "jq",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "om",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "pivotal-cf",
+        "repository": "om",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "pivnet-cli",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "pivotal-cf",
+        "repository": "pivnet-cli",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "hub",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "github",
+        "repository": "hub",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "direnv",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "direnv",
+        "repository": "direnv",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "terraform",
+      "type": "hashicorp-release",
+      "check_every": "6h",
+      "source": {
+        "project": "terraform"
+      }
+    },
+    {
+      "name": "bosh-bootloader",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "cloudfoundry",
+        "repository": "bosh-bootloader",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "govc",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "vmware",
+        "repository": "govmomi",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "quick-uaa-local",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "starkandwayne",
+        "repository": "quick-uaa-local",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "pack",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "buildpack",
+        "repository": "pack",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "knctl",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "cppforlife",
+        "repository": "knctl",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "aliyun-cli",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "aliyun",
+        "repository": "aliyun-cli",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "yj",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "sclevine",
+        "repository": "yj",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "minica",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "user": "starkandwayne",
+        "repository": "minica-binaries",
+        "access_token": "((github_access_token))"
+      }
+    },
+    {
+      "name": "fissile-darwin",
+      "type": "s3",
+      "check_every": "6h",
+      "source": {
+        "bucket": "cf-opensusefs2",
+        "regexp": "fissile/develop/fissile-(.*)\\.darwin-amd64\\.tgz"
+      }
+    }
+  ],
+  "resource_types": [
+    {
+      "name": "hashicorp-release",
+      "type": "registry-image",
+      "source": {
+        "repository": "registry.ops.scalecf.net/genesis-community/hashicorp-release-resource",
+        "insecure": true
+      }
+    },
+    {
+      "name": "pivnet",
+      "type": "registry-image",
+      "source": {
+        "repository": "pivotalcf/pivnet-resource",
+        "tag": "latest-final"
+      }
+    }
+  ]
+}
