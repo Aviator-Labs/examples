@@ -33,7 +33,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.11.4</junit.version>
 
-        <aviatorlabs.pipelinesdk.version>0.0.2</aviatorlabs.pipelinesdk.version>
+        <aviatorlabs.pipelinesdk.version>0.0.3</aviatorlabs.pipelinesdk.version>
         <aviatorlabs.registry.version>0.0.3</aviatorlabs.registry.version>
         <aviatorlabs.git.version>0.0.2</aviatorlabs.git.version>
         <aviatorlabs.time.version>0.0.2</aviatorlabs.time.version>
@@ -50,6 +50,13 @@
             <groupId>org.aviatorlabs.ci</groupId>
             <artifactId>registry-resource</artifactId>
             <version>${aviatorlabs.registry.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
