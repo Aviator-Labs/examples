@@ -1,0 +1,166 @@
+{
+  "jobs": [
+    {
+      "name": "spruce-debian",
+      "public": true,
+      "serial_groups": [
+        "apt"
+      ],
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "spruce",
+          "resource": "spruce",
+          "trigger": true
+        },
+        {
+          "task": "create-debian",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "spruce",
+                "path": "recipe"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/create-debian-pkg-from-binary.sh"
+            },
+            "params": {
+              "DEBUG": "1",
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "IN_BINARY": "spruce-linux-amd64",
+              "OUT_BINARY": "spruce",
+              "NAME": "spruce",
+              "LICENSE": "MIT",
+              "DESCRIPTION": "General purpose YAML & JSON merging tool",
+              "URL": "https://github.com/geofffranks/spruce",
+              "MAINTAINERS": "https://github.com/geofffranks/spruce/graphs/contributors",
+              "VENDOR": "Geoff Franks",
+              "RELEASE_BUCKET": "((debian_s3_bucket))",
+              "AWS_ACCESS_KEY": "((aws_access_key))",
+              "AWS_SECRET_KEY": "((aws_secret_key))",
+              "S3_REGION": "us-east-1",
+              "GPG_ID": "((gpg_id))",
+              "GPG_PUBLIC_KEY": "((gpg.public_key))",
+              "GPG_PRIVATE_KEY": "((gpg.private_key))"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "spruce-homebrew",
+      "public": true,
+      "serial": true,
+      "plan": [
+        {
+          "get": "homebrew",
+          "resource": "homebrew"
+        },
+        {
+          "get": "spruce",
+          "resource": "spruce",
+          "trigger": true
+        },
+        {
+          "task": "update-homebrew",
+          "config": {
+            "platform": "linux",
+            "image_resource": {
+              "type": "registry-image",
+              "source": {
+                "repository": "registry.ops.scalecf.net/genesis-community/concourse",
+                "tag": "latest",
+                "insecure": true
+              }
+            },
+            "inputs": [
+              {
+                "name": "homebrew"
+              },
+              {
+                "name": "spruce",
+                "path": "recipe"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "pushme"
+              }
+            ],
+            "run": {
+              "path": "homebrew/ci/scripts/update-homebrew.sh",
+              "args": [
+                "spruce.rb"
+              ]
+            },
+            "params": {
+              "REPO_ROOT": "homebrew",
+              "REPO_OUT": "pushme",
+              "BINARY": "spruce-darwin-amd64"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "name": "homebrew",
+      "type": "git",
+      "check_every": "6h",
+      "source": {
+        "uri": "github.com/aviatorlabs/examples",
+        "branch": "main",
+        "private_key": "((github_key.private_key))"
+      }
+    },
+    {
+      "name": "spruce",
+      "type": "github-release",
+      "check_every": "6h",
+      "source": {
+        "owner": "geofffranks",
+        "repository": "spruce",
+        "access_token": "((github_access_token))"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "all",
+      "jobs": [
+        "spruce-homebrew",
+        "spruce-debian"
+      ]
+    },
+    {
+      "name": "homebrew",
+      "jobs": [
+        "spruce-homebrew"
+      ]
+    },
+    {
+      "name": "debian",
+      "jobs": [
+        "spruce-debian"
+      ]
+    }
+  ]
+}

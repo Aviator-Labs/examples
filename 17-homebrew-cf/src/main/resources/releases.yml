@@ -1,0 +1,141 @@
+githubReleases:
+  - user: geofffranks
+    repository: spruce
+    jobs:
+      homebrew: true
+      debian: true
+
+#  - user: shieldproject
+#    repository: shield
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: cloudfoundry-community
+#    repository: safe
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: starkandwayne
+#    repository: eden
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: starkandwayne
+#    repository: kafka-service-broker
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: starkandwayne
+#    repository: install-debs-in-order
+#    jobs:
+#      debian: true
+#
+#  - user: starkandwayne
+#    repository: gotcha
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: genesis-community
+#    repository: genesis
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: cloudfoundry-incubator
+#    repository: credhub-cli
+#    jobs:
+#      debian: true
+#
+#  - user: cloudfoundry-incubator
+#    repository: uaa-cli
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: square
+#    repository: certstrap
+#    jobs:
+#      debian: true
+#
+#  - user: stedolan
+#    repository: jq
+#    jobs:
+#      debian: true
+#
+#  - user: pivotal-cf
+#    repository: om
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: pivotal-cf
+#    repository: pivnet-cli
+#    jobs:
+#      debian: true
+#
+#  - user: github
+#    repository: hub
+#    jobs:
+#      debian: true
+#
+#  - user: direnv
+#    repository: direnv
+#    jobs:
+#      debian: true
+#
+#  - user: cloudfoundry
+#    repository: bosh-bootloader
+#    jobs:
+#      debian: true
+#
+#  - name: govc
+#    user: vmware
+#    repository: govmomi
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: starkandwayne
+#    repository: quick-uaa-local
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: buildpack
+#    repository: pack
+#    jobs:
+#      debian: true
+#
+#  - user: projectriff
+#    repository: riff
+#    preRelease: true
+#    jobs:
+#      homebrew: true
+#      debian: true
+#
+#  - user: cppforlife
+#    repository: knctl
+#    jobs:
+#      debian: true
+#
+#  - user: aliyun
+#    repository: aliyun-cli
+#    jobs:
+#      debian: true
+#
+#  - name: minica
+#    user: starkandwayne
+#    repository: minica-binaries
+#    jobs:
+#      debian: true
+#
+#  - user: sclevine
+#    repository: yj
+#    jobs:
+#      homebrew: true
+#      debian: true
