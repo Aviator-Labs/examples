@@ -26,6 +26,10 @@ public class HomebrewCFExample {
                 GitResourceConfig.create("github.com/aviatorlabs/examples", "main")
         );
 
+        homebrew.setCheckEvery("6h");
+
+        pipeline.addResource(homebrew);
+
         Group allGroup = new Group("all");
         Group homebrewGroup = new Group("homebrew");
         Group debianGroup = new Group("debian");

@@ -1,6 +1,7 @@
 package org.aviatorlabs.ci.job.debian;
 
 import org.aviatorlabs.ci.resource.git.GitResource;
+import org.aviatorlabs.ci.resource.git.get.GitGet;
 import org.aviatorlabs.ci.resource.githubrelease.GitHubReleaseConfig;
 import org.aviatorlabs.ci.resource.githubrelease.GitHubReleaseResource;
 import org.aviatorlabs.ci.resource.registry.AnonymousRegistryResource;
@@ -8,6 +9,7 @@ import org.aviatorlabs.ci.resource.registry.RegistryImageConfig;
 import org.aviatorlabs.ci.sdk.job.Job;
 import org.aviatorlabs.ci.sdk.resource.AnonymousResource;
 import org.aviatorlabs.ci.sdk.resource.Resource;
+import org.aviatorlabs.ci.sdk.resource.get.Get;
 import org.aviatorlabs.ci.sdk.step.task.Task;
 import org.aviatorlabs.ci.sdk.step.task.config.Command;
 import org.aviatorlabs.ci.sdk.step.task.config.Input;
@@ -25,8 +27,10 @@ public class CreateDebianPkgJob extends Job {
 
         GitHubReleaseConfig config = (GitHubReleaseConfig) release.getConfig();
 
-        job.addStep(homebrewRepo.createGetDefinition())
-                .addStep(release.createGetDefinition().enableTrigger());
+        GitGet hbRepoGet = homebrewRepo.createGetDefinition(homebrewRepo.getName());
+        Get releaseGet = release.createGetDefinition(release.getName()).enableTrigger();
+        job.addStep(hbRepoGet)
+                .addStep(releaseGet);
 
         RegistryImageConfig genesisCommunityConfig = RegistryImageConfig.create(
                 "registry.ops.scalecf.net/genesis-community/concourse",
@@ -38,11 +42,11 @@ public class CreateDebianPkgJob extends Job {
         TaskConfig createDebianConfig = TaskConfig.create(
                 genesisCommunity,
                 Command.createCommand(
-                        homebrewRepo.createGetDefinition(),
+                        hbRepoGet,
                         "ci/scripts/create-debian-pkg-from-binary.sh")
         );
-        createDebianConfig.addInput(Input.create(homebrewRepo.createGetDefinition()))
-                .addInput(Input.create(release.createGetDefinition()).setPath("recipe"));
+        createDebianConfig.addInput(Input.create(hbRepoGet))
+                .addInput(Input.create(releaseGet).setPath("recipe"));
 
         createDebianConfig.addParam("DEBUG", "1")
                 .addParam("REPO_ROOT", "homebrew")
