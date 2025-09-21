@@ -1,4 +1,4 @@
-# Stark and Wayne GitHub Release Pipeline Example
+# Stark and Wayne Homebrew CF Pipeline Example
 
 A more robust example of Pipeline building using the Homebrew CF pipeline produced
 by Stark and Wayne.

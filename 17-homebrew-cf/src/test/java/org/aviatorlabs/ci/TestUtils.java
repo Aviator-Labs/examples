@@ -31,7 +31,7 @@ public class TestUtils {
         Path parent;
 
         try {
-            parent = Paths.get(Objects.requireNonNull(GitHubReleaseExample.class.getResource("/")).toURI()).getParent();
+            parent = Paths.get(Objects.requireNonNull(HomebrewCFExample.class.getResource("/")).toURI()).getParent();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

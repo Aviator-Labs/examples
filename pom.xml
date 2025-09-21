@@ -25,14 +25,14 @@
         <module>14-build-and-use-image</module>
         <module>15-build-and-push-image</module>
         <module>16-separate-task-config</module>
-        <module>17-github-release</module>
+        <module>17-homebrew-cf</module>
     </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.11.4</junit.version>
+        <junit.version>5.12.0</junit.version>
 
         <aviatorlabs.pipelinesdk.version>0.0.3</aviatorlabs.pipelinesdk.version>
         <aviatorlabs.registry.version>0.0.3</aviatorlabs.registry.version>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

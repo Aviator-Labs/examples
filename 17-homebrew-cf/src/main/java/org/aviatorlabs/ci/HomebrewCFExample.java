@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-public class GitHubReleaseExample {
+public class HomebrewCFExample {
     public static void main(String[] args) {
         Pipeline pipeline = new Pipeline();
 
@@ -74,7 +74,7 @@ public class GitHubReleaseExample {
 
     public static String setPipelineOutput(String pipelineName) {
         try {
-            Path parent = Paths.get(Objects.requireNonNull(GitHubReleaseExample.class.getResource("/")).toURI()).getParent();
+            Path parent = Paths.get(Objects.requireNonNull(HomebrewCFExample.class.getResource("/")).toURI()).getParent();
 
             return "%s/generated-pipelines/%s.json".formatted(parent, pipelineName);
         } catch (Exception e) {

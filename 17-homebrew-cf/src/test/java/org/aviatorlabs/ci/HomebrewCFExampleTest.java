@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("GitHub Release Config Module")
-class GitHubReleaseExampleTest {
+@DisplayName("Homebrew CF Config Module")
+class HomebrewCFExampleTest {
 
     @Test
-    @DisplayName("Comparison - GitHub Release Config")
+    @DisplayName("Comparison - Homebrew CF Config")
     void comparisonTest() {
-        GitHubReleaseExample.main(null);
+        HomebrewCFExample.main(null);
 
         String fileName = "generated.json";
 
